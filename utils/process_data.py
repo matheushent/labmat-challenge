@@ -1,6 +1,10 @@
-from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
+
 from nltk.corpus import stopwords
+import pandas as pd
+import numpy as np
 import string
 
 def text_process(summary):
@@ -56,3 +60,39 @@ def tfidf_transformer(x):
     msg = transformer.transform(msg)
 
     return msg
+
+def tfidf_vectorizer(x_train, x_test, max_nb_words=1000):
+    '''utility function equivalent to CountVectorizer followed by TfidfTransformer
+
+    # Arguments
+        x_train: x data for training
+        y_train: labels
+        max_nb_words: maximum number of words
+
+    # Returns
+        the x_train and y_train transformed
+    '''
+
+    vectorizer_x = TfidfVectorizer(max_features=max_nb_words)
+    x_train = vectorizer_x.fit_transform(x_train).toarray()
+    x_test = vectorizer_x.transform(x_test).toarray()
+
+    return (x_train, x_test)
+
+def load_data(stratify):
+    data = pd.read_csv('dataset.csv')
+    data = data.drop(labels='Source.1', axis=1)
+    data.dropna(axis=0, inplace=True)
+    data = data[data['Business line'] != 'Agriculture']
+    data['Business line'] = data['Business line'].replace({
+        'Commercial': 'Comercial'
+    })
+
+    x = data['Summary']
+    y = data['Business line']
+
+    if stratify:
+        stratify = y
+
+    msg_train, msg_test, label_train, label_test = train_test_split(x, y, test_size=0.2, stratify=stratify)
+    return msg_train, msg_test, label_train, label_test

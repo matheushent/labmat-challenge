@@ -1,0 +1,9 @@
+,precision,recall,f1-score,support
+Comercial,0.57,0.78,0.66,49
+Executive,0.54,0.50,0.52,14
+Generic,0.72,0.53,0.61,53
+Military,0.64,0.67,0.65,27
+Other,1.00,0.33,0.50,6
+micro avg,0.62,0.62,0.62,149
+macro avg,0.69,0.56,0.59,149
+weighted avg,0.65,0.62,0.62,149
