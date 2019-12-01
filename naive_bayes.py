@@ -16,7 +16,7 @@ from sklearn.pipeline import Pipeline
 
 import lightgbm as lgb
 
-from utils.process_data import text_process
+from utils.process_data import text_process_with_lemmatization
 
 parser = OptionParser()
 
@@ -45,7 +45,7 @@ if options.stratify == 1:
 else:
     stratify = None
 
-msg_train, msg_test, label_train, label_test = train_test_split(x, y, test_size=0.2, stratify=stratify)
+msg_train, msg_test, label_train, label_test = train_test_split(x, y, test_size=0.2, stratify=stratify, random_state=100)
 
 class BuildPipeline():
     def __init__(self, msg_train, msg_test, label_train, label_test):
@@ -54,9 +54,9 @@ class BuildPipeline():
         self.label_train = label_train
         self.label_test = label_test
         self.pipeline = Pipeline([
-            ('vectorizer', CountVectorizer(analyzer=text_process)),
+            ('vectorizer', CountVectorizer(analyzer=text_process_with_lemmatization)),
             ('tfidf', TfidfTransformer()),
-            ('classifier', MultinomialNB())
+            ('classifier', MultinomialNB(alpha=0.5697))
         ])
     def call(self):
         self.pipeline.fit(self.msg_train, self.label_train)
@@ -66,6 +66,7 @@ class BuildPipeline():
 
 model = BuildPipeline(msg_train, msg_test, label_train, label_test)
 report = model.call()
+print(report)
 
 end = time.time()
 print('The entire process took {} seconds'.format(end - init))

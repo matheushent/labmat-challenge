@@ -45,21 +45,6 @@ elif options.option == 's':
         corpus.append(text)
 else:
     raise ValueError('You must pass a valid label via command line.')
-    
-wordcloud = WordCloud(background_color=None,
-                      stopwords=stop_words,
-                      max_words=100,
-                      max_font_size=50, 
-                      random_state=42,
-                      mode='RGBA',
-                      colormap='tab20c'
-                      ).generate(str(corpus))
-
-fig = plt.figure(1)
-plt.imshow(wordcloud)
-plt.axis('off')
-plt.show()
-fig.savefig('wordcloud.png', dpi=900)
 
 cv = CountVectorizer(max_df=0.8 ,stop_words=stop_words, max_features=10000, ngram_range=(1,3))
 x = cv.fit_transform(corpus)
@@ -68,14 +53,14 @@ tfidf_transformer = TfidfTransformer(smooth_idf=True, use_idf=True)
 tfidf_transformer.fit(x)
 
 # the text to be processed
-doc = corpus[58]
+doc = corpus[477]
 tf_idf_vector = tfidf_transformer.transform(cv.transform([doc]))
 
 feature_names = cv.get_feature_names()
 
 sorted_items = sort_coo(tf_idf_vector.tocoo())
 #extract only the top n; n here is 10
-keywords = extract_topn_from_vector(feature_names, sorted_items, 10)
+keywords = extract_topn_from_vector(feature_names, sorted_items, 20)
  
 # now print the results
 print(f"\n{options.option}:")
