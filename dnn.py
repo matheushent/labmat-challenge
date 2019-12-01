@@ -7,6 +7,7 @@ import time
 import os
 
 from keras.layers import Dense, Dropout
+from keras.callbacks import TensorBoard
 from keras.models import Sequential
 from keras.optimizers import Adam
 
@@ -72,7 +73,8 @@ dnn.model.fit(
     validation_data=(x_test, y_test),
     epochs=13,
     batch_size=32,
-    verbose=2
+    verbose=2,
+    callbacks=[TensorBoard('./logs/dnn')]
 )
 
 dnn.model.save('./saved_models/dnn.hdf5', overwrite=True)
