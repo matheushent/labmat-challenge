@@ -137,17 +137,17 @@ def plot_classification_report(classification_report, title='Classification repo
 def main():
     sampleClassificationReport = """             precision    recall  f1-score   support
 
-          Comercial       0.625      0.78      0.6122        49
-          Executive       0.25      0.1428      0.1818        14
-          Generic       0.49      0.53      0.509        53
-          Military       0.4864      0.67      0.5625       27
-          Other       1      0.1666      0.2857       6
+          Comercial       0.7347      0.5217      0.6122        69
+          Executive       0      0      0        0
+          Generic       0.68      0.5      0.58        71
+          Military       0.296      0.88      0.4444       9
+          Other       0      0      0       0
 
-        avg / total       0.5704      0.419      0.43       149"""
+        avg / total       0.5369      0.5369      0.5369       149"""
 
 
     plot_classification_report(sampleClassificationReport)
-    plt.savefig('../data-vis-pictures/rnn.png', dpi=200, format='png', bbox_inches='tight', transparent=True)
+    plt.savefig('../data-vis-pictures/nb_1.png', dpi=200, format='png', bbox_inches='tight', transparent=True)
     plt.close()
 
 if __name__ == "__main__":
